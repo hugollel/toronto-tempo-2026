@@ -567,7 +567,9 @@ def fig_candidates(cand, tor_id, path):
     ax.scatter(best["dreb_36"], best["blk_36"], s=size[best.index], color=BOREALIS, lw=0,
                label=f"Best {N_CANDIDATES} on rebounds + blocks, among players available 85%+ of games")
     for _, r in pd.concat([best, tor]).iterrows():
-        ax.annotate(r["player"].split()[-1], (r["dreb_36"], r["blk_36"]), xytext=(6, 4),
+        name = r["player"].split()[-1]
+        off = {"Mabrey": (-8, 6), "Allemand": (6, 6)}.get(name, (6, 4))
+        ax.annotate(name, (r["dreb_36"], r["blk_36"]), xytext=off, ha="right" if off[0] < 0 else "left",
                     textcoords="offset points", fontsize=8,
                     color=BORDEAUX if r["team_id"] == tor_id else NAVY)
     ax.set_xlabel("Defensive rebounds per 36 min")
