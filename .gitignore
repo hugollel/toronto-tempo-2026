@@ -1,0 +1,6 @@
+__pycache__/
+*.pyc
+data/
+*.duckdb
+*.parquet
+.DS_Store
