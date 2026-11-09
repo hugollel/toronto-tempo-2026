@@ -10,16 +10,16 @@ Independent project by **Hugo Leligny**. Not affiliated with the Toronto Tempo o
 
 | Step | Script | What it does |
 |---|---|---|
-| 1 | `pipeline/01_ingest.py` | Downloads schedules, team box scores, player box scores and play-by-play (ESPN, via SportsDataverse) for 2024–2026 as parquet. Logs every file (rows, size, md5). |
-| 2 | `pipeline/02_load_db.py` | Loads the files into a DuckDB database (`raw` schema). Handles schema changes between seasons (`union_by_name`) and reports them. |
-| 3 | `pipeline/03_transform.py` | Builds the `ref`, `clean` and `mart` layers in SQL (see the data dictionary below). |
-| 4 | `pipeline/04_quality_checks.py` | Runs 14 SQL quality checks (FAIL / WARN). Results are appended to `data/quality_report.csv`; the script stops with an error if a FAIL check fails. |
-| 5 | `pipeline/05_analysis.py` | Expected-performance model (least squares with team-season, opponent-season and home effects), travel and time-zone effects, road trips. |
-| 6 | `pipeline/06_lineups.py` | Rebuilds the five players on the court for every possession from substitutions (stints), then on/off. Checks stint points against official scores. |
-| 7 | `pipeline/07_season.py` | Availability, injuries, minutes, monthly splits, duos and trios. |
-| 8 | `pipeline/08_roster.py` | Four factors, shot zones and shot charts, shot creation, player profiles; exports the data for the interactive shot explorer. |
+| 1 | `Pipeline/01_ingest.py` | Downloads schedules, team box scores, player box scores and play-by-play (ESPN, via SportsDataverse) for 2024–2026 as parquet. Logs every file (rows, size, md5). |
+| 2 | `Pipeline/02_load_db.py` | Loads the files into a DuckDB database (`raw` schema). Handles schema changes between seasons (`union_by_name`) and reports them. |
+| 3 | `Pipeline/03_transform.py` | Builds the `ref`, `clean` and `mart` layers in SQL (see the data dictionary below). |
+| 4 | `Pipeline/04_quality_checks.py` | Runs 14 SQL quality checks (FAIL / WARN). Results are appended to `data/quality_report.csv`; the script stops with an error if a FAIL check fails. |
+| 5 | `Pipeline/05_analysis.py` | Expected-performance model (least squares with team-season, opponent-season and home effects), travel and time-zone effects, road trips. |
+| 6 | `Pipeline/06_lineups.py` | Rebuilds the five players on the court for every possession from substitutions (stints), then on/off. Checks stint points against official scores. |
+| 7 | `Pipeline/07_season.py` | Availability, injuries, minutes, monthly splits, duos and trios. |
+| 8 | `Pipeline/08_roster.py` | Four factors, shot zones and shot charts, shot creation, player profiles; exports the data for the interactive shot explorer. |
 
-Run in order: `python pipeline/01_ingest.py` … `python pipeline/08_roster.py`, then `quarto render report/`.
+Run in order: `python Pipeline/01_ingest.py` … `python Pipeline/08_roster.py`, then `quarto render report/`.
 Requirements: Python 3.11+, pandas, numpy, duckdb, matplotlib, pyarrow; Quarto for the reports.
 
 ## Data model
@@ -91,7 +91,7 @@ One row per team-season: games, back_to_backs, total_travel_km, border_crossings
 | stint_players | The five players of each team in each stint |
 | player_on_off | For each player: net rating with her on the court vs off, minutes, possessions |
 
-## Quality checks (`pipeline/04_quality_checks.py`)
+## Quality checks (`Pipeline/04_quality_checks.py`)
 | Level | Check |
 |---|---|
 | FAIL | games: one row per game_id |
